@@ -68,7 +68,6 @@ def main():
     doors = ''.join([a.name, b.name, c.name])
     right_door = random.choice(doors)
     contender = Contender(random.choice(doors))
-    monty = MontyHall()
 
     """Print right door and contender first choice"""
     print("The prize is behind door:", right_door)
@@ -91,11 +90,11 @@ def main():
     Second stage of the game. MH will open one of the two remaining doors and the contender will have to
       decide if maintaining his/her first pick or switching door
     """
-    monty.open_door(door_to_open)
+    MontyHall.open_door(door_to_open)
     contender.second_stage_decision(remaining_contender_door)
 
     """A lot of suspense before MH will tell the audience the final result. Will the contended win the car??"""
-    monty.reveal_final_result(contender.guess, right_door)
+    MontyHall.reveal_final_result(contender.guess, right_door)
 
 
 if __name__ == "__main__":
