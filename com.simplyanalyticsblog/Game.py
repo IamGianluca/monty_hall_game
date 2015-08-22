@@ -14,7 +14,6 @@ class Door(object):
         self.name = name
 
 
-
 class Contender(object):
 
     """
@@ -33,11 +32,9 @@ class Contender(object):
             print("GR: Monty, I want to go ahead with my initial choice. So, I'll stick with door", self.guess.name)
 
     def switch_door(self, remaining_contender_doors):
-        # remaining_contender_doors.remove(self.guess)
-        # print(len(remaining_contender_doors))
-        # for i in range(len(remaining_contender_doors)):
-        #     print(remaining_contender_doors[i].name)
-        # self.guess = remaining_contender_doors
+        assert len(remaining_contender_doors) == 2
+        remaining_contender_doors.remove(self.guess)
+        self.guess = remaining_contender_doors[0]
         print("GR: Monty, my new pick is door", self.guess.name)
 
 
@@ -62,6 +59,7 @@ class MontyHall(object):
     # @staticmethod
     # def decide_door_with_prize():
 
+
 def main():
 
     """
@@ -81,6 +79,7 @@ def main():
     """Print right door and contender first choice"""
     print("The prize is behind door:", right_door.name)
     print("The contender chooses door:", contender.guess.name)
+    print()
 
     """
     Here is where things start getting interesting. There are two scenarios:
@@ -103,14 +102,7 @@ def main():
 
     door_to_open = random.choice(remaining_doors_without_prize)
     remaining_contender_door = copy.copy(doors)
-    remaining_contender_door.remove(right_door)
-
-    try:
-        remaining_contender_door.remove(door_to_open)
-    except:
-        pass
-    print()
-    print(len(remaining_contender_door))
+    remaining_contender_door.remove(door_to_open)
 
     """
     Second stage of the game. MH will open one of the two remaining doors and the contender will have to
@@ -118,13 +110,9 @@ def main():
     """
     MontyHall.open_door(door_to_open)
     contender.second_stage_decision(remaining_contender_door)
-    #
-    # """A lot of suspense before MH will tell the audience the final result. Will the contended win the car??"""
-    # MontyHall.reveal_final_result(contender.guess, right_door)
 
-    print()
-    print("Contender final choice", contender.guess.name)
-    print("The prize is behind door", right_door.name)
+    """A lot of suspense before MH will tell the audience the final result. Will the contended win the car??"""
+    MontyHall.reveal_final_result(contender.guess, right_door)
 
 
 if __name__ == "__main__":
