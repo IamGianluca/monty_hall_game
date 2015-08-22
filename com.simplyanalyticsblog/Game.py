@@ -1,6 +1,7 @@
 import random
 import copy
 
+
 class Door(object):
 
     """
