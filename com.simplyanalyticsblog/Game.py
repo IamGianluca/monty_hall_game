@@ -26,6 +26,8 @@ class Contender(object):
         if random.choice('yn') == 'y':
             print("GR: Well Monty, I know that switching door I would increase my chances to win, so YES I'll change my initial pick")
             Contender.switch_door(self, remainingContenderDoor)
+        else:
+            print("GR: Monty, I want to go ahead with my initial choice. So, I'll stick with door", self.guess)
 
     def switch_door(self, remainingContenderDoor):
         self.guess = remainingContenderDoor
@@ -38,11 +40,13 @@ class MontyHall(object):
     Monty Hall himself!!
     """
 
-    def open_door(self, doorWithoutPrize):
+    @staticmethod
+    def open_door(doorWithoutPrize):
         print("MH: I can tell you behind door", doorWithoutPrize, "there isn't any prize")
         print("MH: Would you like to maintain your first pick or change it?")
 
-    def tell_final_result(self, contenderFinalGuess, rightDoor):
+    @staticmethod
+    def reveal_final_result(contenderFinalGuess, rightDoor):
         if contenderFinalGuess == rightDoor:
             print("MH: Congratulation, you just won a brand new car!!")
         else:
@@ -52,15 +56,15 @@ class MontyHall(object):
 def main():
 
     """
-    Let's Make A Deal show
+    "Let's Make A Deal" game
     """
 
-    a = Door("A", False)
-    b = Door("B", False)
-    c = Door("C", True)
+    a = Door("A")
+    b = Door("B")
+    c = Door("C")
 
     """Hide the prize behind one of the doors and let the contender make his first pick"""
-    doors = "ABC"
+    doors = ''.join([a.name, b.name, c.name])
     rightDoor = random.choice(doors)
     contender = Contender(random.choice(doors))
     monty = MontyHall()
@@ -90,7 +94,7 @@ def main():
     contender.second_stage_decision(remainingContenderDoor)
 
     """A lot of suspense before MH will tell the audience the final result. Will the contended win the car??"""
-    monty.tell_final_result(contender.guess, rightDoor)
+    monty.reveal_final_result(contender.guess, rightDoor)
 
 
 if __name__ == "__main__":
