@@ -1,6 +1,4 @@
 import random
-import re
-import numpy as np
 import copy
 
 class Door(object):
