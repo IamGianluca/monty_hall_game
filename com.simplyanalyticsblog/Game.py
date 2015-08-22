@@ -87,17 +87,15 @@ def main():
     2) The contender got it wrong on his first pick, so MH will have to open the only remaining door
          which doesn't hide the final prize
 
-    @TODO: Find bette way to remove class instances from array. numpy.delete is not an option because it doesn't
+    @TODO: Find better way to remove class instances from array. numpy.delete is not an option because it doesn't
       handle class instances as arguments
     """
     first_stage_remaining_doors = copy.copy(doors)
     first_stage_remaining_doors.remove(contender.guess)
 
     remaining_doors_without_prize = copy.copy(first_stage_remaining_doors)
-    try:
+    if right_door in remaining_doors_without_prize:
         remaining_doors_without_prize.remove(right_door)
-    except:
-        pass
 
     door_to_open = random.choice(remaining_doors_without_prize)
     remaining_contender_door = copy.copy(doors)
