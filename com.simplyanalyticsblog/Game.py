@@ -101,7 +101,7 @@ def main():
     2) The contender got it wrong on his first pick, so MH will have to open the only remaining door
          which doesn't hide the final prize
     """
-    # TODO(gianluca): Find better way to remove class instances from array
+    # TODO(gianluca): Find a better way to remove class instances from array
     first_stage_remaining_doors = copy.copy(doors)
     first_stage_remaining_doors.remove(contender.guess)
 
