@@ -8,9 +8,15 @@ class Door(object):
     A door in the Monty Hall game show Let's Make A Deal
     """
 
+    # Use class variable to keep track of which door hides the prize
+    right_door = None
+
     def __init__(self, name, has_prize=False):
         self.hasPrize = has_prize
         self.name = name
+
+    def hide_prize(self):
+        self.hasPrize = True
 
 
 class Contender(object):
@@ -19,8 +25,8 @@ class Contender(object):
     The contender in the Monty Hall game
     """
 
-    def __init__(self, initial_guess):
-        self.guess = initial_guess
+    def __init__(self):
+        self.guess = None
 
     def second_stage_decision(self, remaining_contender_doors):
         if random.choice('yn') == 'y':
@@ -29,6 +35,9 @@ class Contender(object):
             Contender.switch_door(self, remaining_contender_doors)
         else:
             print("GR: Monty, I want to go ahead with my initial choice. So, I'll stick with door", self.guess.name)
+
+    def choose_door(self, doors):
+        self.guess = random.choice(doors)
 
     def switch_door(self, remaining_contender_doors):
         assert len(remaining_contender_doors) == 2
@@ -50,13 +59,16 @@ class MontyHall(object):
 
     @staticmethod
     def reveal_final_result(contender_final_guess, right_door):
-        if contender_final_guess.name == right_door.name:
+        if contender_final_guess.hasPrize:
             print("MH: Congratulation, you just won a brand new car!!")
         else:
             print("MH: What a pity! The final prize was behind door", right_door.name)
-    #
-    # @staticmethod
-    # def decide_door_with_prize():
+
+    @staticmethod
+    def decide_door_with_prize(doors):
+        right_door = random.choice(doors)
+        right_door.hide_prize()
+        Door.right_door = right_door
 
 
 def main():
@@ -69,14 +81,16 @@ def main():
     b = Door("B")
     c = Door("C")
 
-    """Hide the prize behind one of the doors and let the contender make his first pick"""
+    # Hide the prize behind one of the doors and let the contender make his first pick
     doors = [a, b, c]
 
-    right_door = random.choice(doors)
-    contender = Contender(random.choice(doors))
+    MontyHall.decide_door_with_prize(doors)
 
-    """Print right door and contender first choice"""
-    print("The prize is behind door:", right_door.name)
+    contender = Contender()
+    contender.choose_door(doors)
+
+    # Print the name of the door which hides the final prize and the contender (GR) first choice
+    print("The prize is behind door:", Door.right_door.name)
     print("The contender chooses door:", contender.guess.name)
     print()
 
@@ -94,8 +108,8 @@ def main():
     first_stage_remaining_doors.remove(contender.guess)
 
     remaining_doors_without_prize = copy.copy(first_stage_remaining_doors)
-    if right_door in remaining_doors_without_prize:
-        remaining_doors_without_prize.remove(right_door)
+    if Door.right_door in remaining_doors_without_prize:
+        remaining_doors_without_prize.remove(Door.right_door)
 
     door_to_open = random.choice(remaining_doors_without_prize)
     remaining_contender_door = copy.copy(doors)
@@ -108,8 +122,8 @@ def main():
     MontyHall.open_door(door_to_open)
     contender.second_stage_decision(remaining_contender_door)
 
-    """A lot of suspense before MH will tell the audience the final result. Will the contended win the car??"""
-    MontyHall.reveal_final_result(contender.guess, right_door)
+    # Lot of suspense before MH will tell the audience the final result. Will the contended win the car??
+    MontyHall.reveal_final_result(contender.guess, Door.right_door)
 
 
 if __name__ == "__main__":
